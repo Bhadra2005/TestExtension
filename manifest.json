@@ -1,19 +1,17 @@
 {
-    "manifest_version": 3,
-    "name": "LeetCode User Stats",
-    "version": "1.0",
-    "description": "Shows LeetCode stats for a user",
-    "icons": {
-      "48": "icon.png"
-    },
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": "icon.png"
-    },
-    "permissions": [
-      "activeTab",
-      "storage",
-  "https://leetcode.com/*"
-    ]
-  }
-  
+  "manifest_version": 3,
+  "name": "LeetCode Stats Fetcher",
+  "version": "1.0",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://leetcode.com/*"
+  ],
+  "permissions": [
+    "storage"
+  ]
+}
