@@ -1,56 +1,23 @@
-document.getElementById('fetchStats').addEventListener('click', async () => {
+document.getElementById('fetchStats').addEventListener('click', () => {
     const username = document.getElementById('username').value.trim();
-    if (!username) {
-        alert("Please enter a LeetCode username.");
-        return;
+  
+    if (username) {
+      // Send the username to the background script
+      chrome.runtime.sendMessage({ type: 'fetchStats', username: username });
+    } else {
+      document.getElementById('totalSolved').textContent = 'Please enter a username.';
     }
-
-    const GRAPHQL_URL = 'https://leetcode.com/graphql';
-    const query = `
-        query userProfile($username: String!) {
-            matchedUser(username: $username) {
-                username
-                submitStatsGlobal {
-                    acSubmissionNum {
-                        difficulty
-                        count
-                        submissions
-                    }
-                }
-            }
-        }
-    `;
-
-    const variables = { username };
-
-    try {
-        const response = await fetch(GRAPHQL_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ query, variables })
-        });
-
-        const data = await response.json();
-        if (!data.data.matchedUser) {
-            document.getElementById('stats').innerHTML = `<p>User not found.</p>`;
-            return;
-        }
-
-        const stats = data.data.matchedUser.submitStatsGlobal.acSubmissionNum;
-        const totalSolved = stats.find(d => d.difficulty === "All").count;
-
-        document.getElementById('stats').innerHTML = `
-            <p><strong>Username:</strong> ${username}</p>
-            <p><strong>Total Problems Solved:</strong> ${totalSolved}</p>
-            <p><strong>Easy:</strong> ${stats[1].count}</p>
-            <p><strong>Medium:</strong> ${stats[2].count}</p>
-            <p><strong>Hard:</strong> ${stats[3].count}</p>
-        `;
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('stats').innerHTML = `<p>Error fetching stats.</p>`;
+  });
+  
+  // Listen for the response from the background script
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'userStats') {
+      // Display total solved problems
+      document.getElementById('totalSolved').textContent = `Total Problems Solved: ${message.totalSolved}`;
+  
+      // Display solved problems by difficulty
+      document.getElementById('easySolved').textContent = `Easy Problems Solved: ${message.easySolved}`;
+      document.getElementById('mediumSolved').textContent = `Medium Problems Solved: ${message.mediumSolved}`;
+      document.getElementById('hardSolved').textContent = `Hard Problems Solved: ${message.hardSolved}`;
     }
-});
+  });
