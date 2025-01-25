@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode Stats</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeetCode Stats</title>
 </head>
 <body>
-    <h2>LeetCode User Stats</h2>
-    <input type="text" id="username" placeholder="Enter Username" />
-    <button id="fetchStats">Get Stats</button>
-    <div id="stats"></div>
-    <script src="popup.js"></script>
+  <h1>LeetCode Stats</h1>
+  <label for="username">Enter LeetCode Username: </label>
+  <input type="text" id="username" placeholder="Username">
+  <button id="fetchStats">Fetch Stats</button>
+
+  <p id="totalSolved">Please enter a username to see the stats.</p>
+  <p id="easySolved"></p>
+  <p id="mediumSolved"></p>
+  <p id="hardSolved"></p>
+
+  <script src="popup.js"></script>
 </body>
 </html>
